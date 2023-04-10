@@ -1,0 +1,41 @@
+body {
+    background-color: #DBF9FC;
+    }
+     
+      #col-rev {
+       
+        flex-direction: column-reverse;
+        
+      }
+      .box {
+        margin-left: 300;
+      
+       width: 900px;
+       height: 1100px;
+     }
+
+     a {
+      text-decoration: none;
+    color: white;
+     }
+     
+     #row-rev {
+      flex-direction: row-reverse;
+    }
+      .box1 {
+        margin-right: 200;
+       width: 250px;
+       height: 1100px;
+     } 
+   
+      .lightblue {
+        background-color: rgb(186, 235, 240);
+      }
+
+      .blue {
+        background-color: rgb(68, 151, 169);
+      }
+
+   
+     
+      
