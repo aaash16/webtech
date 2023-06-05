@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Form - MongoDB</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  
+</head>
+<body>
+  
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>Color</th>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% prod.forEach(function(product) { %>
+        <tr>
+          <td><%= product.color %></td>
+          <td><%= product.title %></td>
+          <td><%= product.price %></td>
+          <td>
+            <form method="POST" action="/delete">
+              <input type="hidden" name="title" value="<%= product.title %>">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+<button class="btn btn-primary"><a style="color: white; text-decoration: none;" href="/products">Add New</a></button>
+</body>
+</html>
