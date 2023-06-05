@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Form - MongoDB</title>
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style1.css">
+	<!--<script src="signup.js"></script>-->
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+    
+            </div>
+            <div class="col-md-6 main">
+                <h2>Product List</h2>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% users.forEach(function(user) { %>
+                        <tr>
+                          <td><%= user.name %></td>
+                          <td><%= user.quantity %></td>
+                          <td><%= user.category %></td>
+                          <td>
+                            <form method="POST" action="/delete">
+                              <input type="hidden" name="name" value="<%= user.name %>">
+                              <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                          </td>
+                        </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                <br>
+                <form action="/products" method="POST">
+                    <h2>Add Product Form</h2>
+                    <input type="text" class="box" id="name" name="name" placeholder="Name" required />
+                    <br>
+                    <input type="number" class="box" id="quantity" name="quantity" placeholder="Quantity" required />
+                    <br>
+                    <input type="text" class="box" id="category" name="category" placeholder="Category" required />
+                    <br>
+                    <input type="submit" value="Add Product" id="submit" alt="submit" />
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    
+
+</body>
+
+</html>
