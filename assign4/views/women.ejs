@@ -1,0 +1,250 @@
+<style>
+  body {
+        justify-content: initial;
+        align-items: initial;
+    }
+
+    .card {
+      width: 300px;
+      height: 435px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      perspective: 1000px; /* Perspective for 3D effect */
+      margin-bottom: 20px;
+      margin-right: 30px;
+    }
+    
+    .card-inner {
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%; /* Maintain a square aspect ratio */
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+    }
+    
+    .card:hover .card-inner {
+      transform: rotateY(180deg); /* Flip on hover */
+    }
+    
+    .card-front,
+    .card-back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      backface-visibility: hidden; /* Hide the backface of the card */
+    }
+    
+    .card-front img, .card-back img{
+      margin-top: 10px;
+    }
+    .card-front {
+      transform: rotateY(0deg);
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+    }
+    
+    .card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+    }
+    
+    .card h3 {
+      font-size: 18px;
+      margin: 0;
+    }
+    
+    .card p {
+      font-size: 14px;
+      color: #555;
+      margin: 5px 0;
+    }
+    
+    .card .price {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .add-to-cart-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #337ab7;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .add-to-cart-btn:hover {
+      background-color: #23527c;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Ensure the overlay is on top */
+    }
+
+    .modal-form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      position: relative; /* Ensure close button is positioned relative to the form */
+    }
+
+    .modal-form label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .modal-form input[type="number"] {
+      width: 100%;
+      padding: 5px;
+      border-radius: 3px;
+    }
+
+    .modal-form button {
+      display: block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #337ab7;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+
+</style>
+<!-- products.ejs -->
+
+
+<div class="container">
+  <div style="height: 80px;"></div>
+  <div class="row">
+      <% products.forEach(product => { %>
+          <% if (product.type == "women") { %>
+            <div class="card">
+              <div class="card-inner">
+                <div class="card-front">
+                  <img src="/assets/<%= product.front_img %>" alt="Clothing Image">
+                </div>
+                <div class="card-back">
+                  <img src="/assets/<%= product.back_img %>" alt="Hover Image">
+                </div>
+              </div>
+              <h3 style="margin-top: 20px;"><%= product.name %></h3>
+              <p style="margin-top: -3px;"><%= product.category %></p>
+              <p class="price">Rs. <%= product.price %></p>
+              <a href="#" class="add-to-cart-btn" style="width: 280px;" data-product-id="<%= product._id %>" data-product-name="<%= product.name %>">Add to Cart</a>
+            </div>
+          <% } %>
+      <% }) %>
+    </div>
+
+    <div class="modal-overlay">
+      <div class="modal-form">
+        <span class="modal-close">&times;</span> <!-- Close button -->
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" min="1" value="1">
+        <button id="submit-btn">Add to Cart</button>
+      </div>
+    </div>
+</div>
+
+<script>
+  // JavaScript code to handle button click and close the overlay
+
+// Get all the "Add to Cart" buttons
+const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+
+// Get the modal overlay, form, and close button elements
+const modalOverlay = document.querySelector(".modal-overlay");
+const modalForm = document.querySelector(".modal-form");
+const modalCloseButton = document.querySelector(".modal-close");
+const quantityInput = document.querySelector("#quantity");
+let selectedProductId;
+let selectedProductName;
+
+// Add click event listener to each "Add to Cart" button
+addToCartButtons.forEach(function (button) {
+  button.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    // Show the modal overlay
+    modalOverlay.style.display = "flex";
+
+    // Get the product ID and name from the data attributes
+    selectedProductId = button.dataset.productId;
+    selectedProductName = button.dataset.productName;
+
+    // Set the product name in the form
+    const productNameElement = document.querySelector("#product-name");
+    productNameElement.textContent = selectedProductName;
+  });
+});
+
+// Handle form submission
+const submitButton = document.querySelector("#submit-btn");
+submitButton.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  // Get the quantity value
+  const quantity = quantityInput.value;
+
+  // Prepare the data to be sent in the request body
+  const data = {
+    id: selectedProductId,
+    quantity: quantity,
+  };
+
+  // Make a POST request to the /cart route using AJAX
+  fetch("/cart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      // Handle the response from the server as needed
+      console.log(result);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+  // Close the modal overlay
+  modalOverlay.style.display = "none";
+});
+
+// Add click event listener to the close button
+modalCloseButton.addEventListener("click", function () {
+  // Close the modal overlay
+  modalOverlay.style.display = "none";
+});
+
+
+
+</script>

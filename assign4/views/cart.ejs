@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bootstrap Table Example</title>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+  <style>
+    body {
+      justify-content: initial;
+      align-items: initial;
+    }
+  </style>
+</head>
+<body>
+  <%  %>
+  <div class="container mt-4">
+    <div style="height: 100px;"></div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% let totalAmount = 0; %>
+        <% products.forEach(function(user) { %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.quantity %></td>
+            <td>Rs. <%= user.price %></td>
+            <td>Rs. <%= user.amount %></td>
+            <td>
+              <form method="POST" action="/delete-cart">
+                <input type="hidden" name="id" value="<%= user.id %>">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <% totalAmount += user.amount; %>
+        <% }); %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" class="text-right"><strong>Total:</strong></td>
+          <td>Rs. <%= totalAmount.toFixed(2) %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</body>
+</html>

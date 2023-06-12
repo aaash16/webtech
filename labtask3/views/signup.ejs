@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+	<script src="signup.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-6 main">
+                <form action="/signup" method="POST">
+                    <h2 style="color: white;">SignUp Form</h2>
+                    <input type="text" class="box" id="uname" name="uname" placeholder="Name" required />
+                    <br>
+                    <input type="text" class="box" id="mail" name="email" placeholder="Email" required />
+                    <br>
+                    <input type="text" class="box" id="phone" name="phno" placeholder="Mobile" required />
+                    <br>
+                    <input type="password" class="box" id="pass" name="password" placeholder="Password" required />
+                    <br>
+                    <label style="display: block; color: white; float: right;">
+                        <input style="width: 15px; height: 15px;" type="checkbox" id="isAdmin" name="isAdmin" />
+                        Admin
+                    </label>
+                    <br>
+                    <input type="submit" value="Submit" id="submit" alt="submit"/> 
+                </form>
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

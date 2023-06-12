@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sidebar">
+        <ul class="nav flex-column" style="font-size: 25px;">
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="displayForm('update')">View Users</a>
+            </li>
+            <li class="nav-item" style="margin-top: 10px;">
+                <a class="nav-link" href="#" onclick="displayForm('add')">Add products</a>
+            </li>
+            <li class="nav-item" style="margin-top: 10px;">
+                <a class="nav-link" href="##" onclick="displayForm('delete')">View products</a>
+            </li>
+            <!-- <li class="nav-item" style="margin-top: 10px;">
+                <a class="nav-link" href="#" onclick="displayForm('update')">Update products</a>
+            </li>
+            <li class="nav-item" style="margin-top: 10px;">
+                <a class="nav-link" href="#" onclick="displayForm('read')">Read products</a>
+            </li> -->
+            <li class="nav-item" style="margin-top: 510px;">
+                <a class="nav-link" href="/">Back</a>
+            </li> 
+        </ul>
+    </div>
+
+    <div class="content">
+        <div id="addForm" style="display: none;">
+            <form action="add-product" method="POST">
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" class="form-control" id="productName" name="name" placeholder="Enter product name">
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Product Category</label>
+                    <input type="text" class="form-control" id="productCategory" name="category" placeholder="Enter product category">
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Product Type</label>
+                    <input type="text" class="form-control" id="productCategory" name="type" placeholder="Enter product type">
+                </div>
+                <div class="form-group">
+                    <label for="productQuantity">Product Quantity</label>
+                    <input type="number" class="form-control" id="productQuantity" name="quantity" placeholder="Enter product quantity">
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Product Price</label>
+                    <input type="number" class="form-control" id="productPrice" name="price" placeholder="Enter product price">
+                </div>
+                <div class="form-group">
+                  <label for="productPrice">Front Image URL</label>
+                  <input type="text" class="form-control" id="productPrice" name="front_img" placeholder="Enter front img url">
+                </div>
+                <div class="form-group">
+                  <label for="productPrice">Back Image URL</label>
+                  <input type="text" class="form-control" id="productPrice" name="back_img" placeholder="Enter back img url">
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+
+        <div id="deleteForm" style="display: block;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% prod.forEach(function(pr) { %>
+                    <tr>
+                      <td><%= pr.name %></td>
+                      <td><%= pr.category %></td>
+                      <td><%= pr.type %></td>
+                      <td><%= pr.quantity %></td>
+                      <td><%= pr.price %></td>
+                      <td>
+                          <button type="submit" class="btn btn-success"><a style="color: white; text-decoration: none;" href="/update-products?pr_name=<%= pr.name %>&pr_category=<%= pr.category %>&pr_type=<%= pr.type %>&pr_quantity=<%= pr.quantity %>&pr_price=<%= pr.price %>&pr_fimg=<%= pr.front_img %>&pr_bimg=<%= pr.back_img %>&pr_id=<%= pr._id %>">Update</a></button>
+                      </td>
+                      <td>
+                        <form method="POST" action="/delete-product">
+                          <input type="hidden" name="name" value="<%= pr.name %>">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <% if (pr_type == "quantity") { %>
+              <form  method="POST" action="/update-password">
+                <input type="hidden" name="name" value="<%= pr_name %>">
+                <input type="text" placeholder="Enter New Quantity" name="password" required id="email">
+                <button type="submit" class="btn btn-success" id="s-btn">Update</button>
+              </form>
+              <% } else if (pr_type == "price"){ %>
+                <form  method="POST" action="/update-password">
+                    <input type="hidden" name="name" value="<%= pr_name %>">
+                    <input type="text" placeholder="Enter New Price" name="password" required id="email">
+                    <button type="submit" class="btn btn-success" id="s-btn">Update</button>
+                </form>
+              <% } %>
+        </div>
+
+        <div id="updateForm" style="display: none;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Admin Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% users.forEach(function(user) { %>
+                    <tr>
+                      <td><%= user.uname %></td>
+                      <td><%= user.email %></td>
+                      <td><%= user.phno %></td>
+                      <td><%= user.isAdmin %></td>
+                      <td>
+                        <form method="POST" action="/delete">
+                          <input type="hidden" name="uname" value="<%= user.uname %>">
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            
+        </div>
+
+        <div id="readForm" style="display: none;">
+            <h3>Read Products</h3>
+            <!-- Form fields for reading/displaying products -->
+        </div>
+    </div>
+
+    <script>
+        function displayForm(formType) {
+            document.getElementById('addForm').style.display = 'none';
+            document.getElementById('deleteForm').style.display = 'none';
+            document.getElementById('updateForm').style.display = 'none';
+            document.getElementById('readForm').style.display = 'none';
+    
+            if (formType === 'add') {
+                document.getElementById('addForm').style.display = 'block';
+            } else if (formType === 'delete') {
+                document.getElementById('deleteForm').style.display = 'block';
+            } else if (formType === 'update') {
+                document.getElementById('updateForm').style.display = 'block';
+            } else if (formType === 'read') {
+                document.getElementById('readForm').style.display = 'block';
+            }
+        }
+    </script>
+</body>    
+</html>
